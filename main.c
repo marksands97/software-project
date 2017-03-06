@@ -1,49 +1,87 @@
 /*
  * main.c
  *
- *  Created on: 26 Feb 2017
- *      Authors: Fionan, Mark
- *      Temporary main function
+ *  Created on: 3 Mar 2017
+ *      Author: Owner
  */
+
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include "operations.h" //header file containing function prototypes
+#include <stdlib.h>
+#include <time.h>
+#include "operations.h"
 
-int main (void)
+int main(void)
 {
-	setbuf(stdout, NULL); //for scanf to work properly
-	int numofplayers=10;
-	int numofslots;
+	int i, choice, num_players;
+	srand(time(NULL));
 
-	do{
-	printf("How many people are playing?\n");
-	scanf("%d", &numofplayers);
-	}while(numofplayers<1 || numofplayers > MAXPLAYERS); //Ensures a valid input
+	setbuf(stdout, NULL);
+	printf("How many players would you like to be in the game (Max 6): ");
+	scanf("%d", &num_players);
 
-//    int a; //Counter
-//   /*Initialize the stats of each player: */
-//    for(a = 0; a < numofplayers; a++)
-//     {
-//
-//            	 strcpy(player[a].name,"bob");// The player's name
-//            	 player[a].class='E'; //The player type (can be 'O', 'H', 'W' or 'E')
-//            	 player[a].hp=120; //Each player's life points
-//            	 player[a].smartness=100;
-//            	 player[a].strength=100;
-//            	 player[a].magic=100;
-//            	 player[a].luck=100;
-//            	 player[a].dexterity=100;
-//
-//
-//     }
+	for(i=0;i<num_players;i++)
+	{
+		printf("Please enter a name for player %d: ", i+1);
+		scanf("%s", players[i].name);
+	}
 
+	for(i=0;i<num_players;i++)
+	{
+		printf("Player %d name : %s\n", i+1, players[i].name);
+	}
 
-	/*Initialize the slots function: */
-	slotsfunction(numofplayers, &numofslots); //Note: We are passing numofslots into the slots function by reference
+	for(i=0;i<num_players;i++)
+	{
+		printf("Player %d Type: (1)Elf (2)Human (3)Orge (4)Wizard : ", i+1);
+		scanf("%d", &choice);
 
-	move(numofplayers, numofslots); //Note: Since numofslots is not being altered in this function, we are passing it be value this time.
+		switch(choice)
+		{
+			case 1:
+			strcpy(players[i].class, "Elf");
+			break;
+
+			case 2:
+			strcpy(players[i].class, "Human");
+			break;
+
+			case 3:
+			strcpy(players[i].class, "Ogre");
+			break;
+
+			case 4:
+			strcpy(players[i].class, "Wizard");
+			break;
+		}
+	}
+
+	i=0;
+
+	for(i=0;i<num_players;i++)
+	{
+		if(players[i].class[0] == 'E')
+		{
+			printf("Player %d is an Elf\n", i+1);
+		}
+
+		else if(players[i].class[0] == 'H')
+		{
+			printf("Player %d is a Human\n", i+1);
+		}
+
+		else if(players[i].class[0] == 'O')
+		{
+			printf("Player %d is an Ogre\n", i+1);
+		}
+
+		else if(players[i].class[0] == 'W')
+		{
+			printf("Player %d is a Wizard\n", i+1);
+		}
+	}
+
+	abilities(num_players);
 
 	return 0;
 }
-
