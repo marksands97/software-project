@@ -1,7 +1,6 @@
 /*
  * main.c
  *
- *  Created on: 26 Feb 2017
  *      Authors: Fionan, Mark
  *      Temporary main function
  */
@@ -13,36 +12,87 @@
 int main (void)
 {
 	setbuf(stdout, NULL); //for scanf to work properly
-	int numofplayers=10;
+	int numofplayers;
 	int numofslots;
+	int i, choice;
+
+	struct Characters *first, *current, *last;
 
 	do{
 	printf("How many people are playing?\n");
 	scanf("%d", &numofplayers);
-	}while(numofplayers<1 || numofplayers > MAXPLAYERS); //Ensures a valid input
-
-//    int a; //Counter
-//   /*Initialize the stats of each player: */
-//    for(a = 0; a < numofplayers; a++)
-//     {
-//
-//            	 strcpy(player[a].name,"bob");// The player's name
-//            	 player[a].class='E'; //The player type (can be 'O', 'H', 'W' or 'E')
-//            	 player[a].hp=120; //Each player's life points
-//            	 player[a].smartness=100;
-//            	 player[a].strength=100;
-//            	 player[a].magic=100;
-//            	 player[a].luck=100;
-//            	 player[a].dexterity=100;
-//
-//
-//     }
+	}while(numofplayers<2 || numofplayers > MAXPLAYERS); //Ensures a valid input
 
 
-	/*Initialize the slots function: */
+    for (int i = 0; i < numofplayers; i++)
+    {
+        last = malloc (sizeof (players));
+        last->data = i;
+        last->next = NULL;
+        if(i==0)
+        {
+        	first = last;
+        }
+        else
+        	current-> next = last;
+        current = last;
+    }
+
+    current = first;
+    while (current != NULL)
+    {
+        current = current->next;
+    }
+
+
+	for(i=0;i<numofplayers;i++)
+	{
+		printf("Please enter a name for player %d: ", i+1);
+		scanf("%24s", players[i].name);
+	}
+
+	for(i=0;i<numofplayers;i++)
+		{
+		do{
+			printf("\nPlayer %d Type: (1)Elf (2)Human (3)Ogre (4)Wizard : ", i+1);
+			scanf("%d", &choice);
+		   }while(choice!=1 && choice!=2 && choice!=3 && choice!=4); //Ensures a valid input
+
+
+		switch(choice)
+		  {
+			case 1:
+			{
+			strcpy(players[i].class, "Elf");
+			break;
+			}
+
+			{
+			case 2:
+			strcpy(players[i].class, "Human");
+			break;
+			}
+
+			{
+			case 3:
+			strcpy(players[i].class, "Ogre");
+			break;
+			}
+
+			{
+			case 4:
+			strcpy(players[i].class, "Wizard");
+			break;
+			}
+
+		  }
+		abilities(numofplayers, i);//Set the abilities for this player
+		}
+
 	slotsfunction(numofplayers, &numofslots); //Note: We are passing numofslots into the slots function by reference
 
 	move(numofplayers, numofslots); //Note: Since numofslots is not being altered in this function, we are passing it be value this time.
+
 
 	return 0;
 }

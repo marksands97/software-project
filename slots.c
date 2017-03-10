@@ -26,13 +26,33 @@ void slotsfunction(int numofplayers, int *numofslots)
 	scanf("%d", &*numofslots);
 	}while(*numofslots<numofplayers||*numofslots>MAXSLOTS); //Ensure a valid input
 
-	int rowNum=0;
+	struct Slotstruct *first, *current, *last;
 
+    for (int i = 0; i < *numofslots; i++)
+    {
+        last = malloc(sizeof (slot));
+        last->data = i;
+        last->next = NULL;
+        if(i==0)
+        	first = last;
+        else
+        	current-> next = last;
+        current = last;
+    }
+
+    current = first;
+    while (current != NULL)
+    {
+        current = current->next;
+    }
+
+
+	int rowNum=0;
 
 	/*Randomly set the type of each slot:*/
 	while(rowNum<*numofslots)
 	{
-		dice = rand() % 3; //Roll the imaginary 3 sided dice (or die)
+		dice = rand() % 3; //Roll the imaginary 3 sided dice
 
 		if(dice==0)
 		  strcpy(slot[rowNum].slottype,"Ground");
@@ -47,33 +67,43 @@ void slotsfunction(int numofplayers, int *numofslots)
 
     for(i=0;i<*numofslots;i++)
     {
-     slot[i].full=0; //Initialize all values to 0
+     slot[i].full=0; //Initialize all values to 0.
     }
 
-    int placed=0; //Boolean value to determine whether a player has been placed
+    int placed=0; //Boolean value to determine whether a player has been placed.
 
-    for(i=0;i<numofplayers;i++)//Go through each player (0 to numofplayers)
+    for(i=0;i<numofplayers;i++)//Go through each player (0 to numofplayers).
     {
-      while(placed == 0)//While the player has not been placed
+    while(placed == 0)//While the player has not been placed.
       {
-    	dice = rand() % *numofslots; //Go to a random slot
+       dice = rand() % (*numofslots); //Go to a random slot.
+       printf("\nDICE=%d", dice);
 
-       if (slot[dice].full==0)//If the current slot is empty
+       if (slot[dice].full==0)//If the current slot is empty.
         {
-    	  slot[dice].currentplayer=i; //Assign the slot with a player
-    	  player[i].currentslot=dice; //Assign the player with a slot
-    	  slot[dice].full = 1; //Mark that this slot is full
+    	   printf("\ni=%d", i);
+    	  slot[dice].currentplayer=i; //Assign the slot with a player POSITION (i.e. Player #1 = 0).
+    	  players[i].currentslot=dice; //Assign the player with the slot position (not slot NUMBER!).
+    	  slot[dice].full = 1; //Mark that this slot is full.
     	  placed = 1; //Placed = true
         }
+
       }
-    placed = 0; //reset placed back to 0/false
+    placed = 0; //reset placed back to 0 (false).
+    printf("\nPlayer #%d is on slot #%d (%s).\n",i+1, players[i].currentslot+1, slot[players[i].currentslot].slottype);
+        	/* The above line is a little confusing, so let's break it down:
+
+        	  -> i+1: Since the first player (players[0]), starts with i being 0.
+        	  -> players[i].currentslot+1: This is simply the slot NUMBER, which the player is standing on.
+        	  -> slot[players[i].currentslot-1].slottype: players[i].currentslot will give us the slot POSITION.
+        	                                              Adding .slottype to the end of this will then give us
+        	                                              the type of slot, which the player is on.
+
+         	 */
+
+
     }
 
-    for(i=0;i<*numofslots;i++)
-     {
-     if (slot[i].full==1) //If the slot has someone on it
-    	printf("\nSlot #%d has player #%d on it.",i+1, slot[i].currentplayer+1);
-     }
 
 }
 
